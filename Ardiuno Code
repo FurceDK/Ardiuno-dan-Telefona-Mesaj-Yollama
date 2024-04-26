@@ -1,0 +1,434 @@
+#include <SoftwareSerial.h>
+SoftwareSerial iletisim(12, 13); // RX,TX
+int butonkisa = 2;
+int butonuzun = 5;
+int switc = 6;
+int led = 8;
+int ok = 9;
+int switch_led = 10;
+int gonder = 11;
+String(h);
+String(x);
+String(harf);
+String(kelime);
+char data;
+boolean durum = true;
+boolean durum_while = false;
+
+
+void setup() {
+  pinMode (gonder, INPUT);
+  pinMode(switc, INPUT);
+  pinMode(butonkisa, INPUT);
+  pinMode(butonuzun, INPUT);
+  pinMode(ok, INPUT);
+  pinMode(led, OUTPUT);
+  Serial.begin(9600);
+  iletisim.begin(9600);
+}
+
+void kisa() {
+  digitalWrite(led, HIGH);
+  delay(200);
+  digitalWrite(led, LOW);//kısa
+  delay(1000);
+}
+
+void uzun() {
+  digitalWrite(led, HIGH);
+  delay(700);
+  digitalWrite(led, LOW);//uzun
+  delay(1000);
+}
+void loop() {
+  if (digitalRead(ok) == 1) {
+    //Serial.print("OK ÇALIŞTI");
+    delay(1000);
+  }
+  if (digitalRead(gonder) == 1) {
+    //Serial.print("gonder ÇALIŞTI");
+    delay(1000);
+  }
+  if (digitalRead(butonkisa) == 1) {
+    //Serial.print(" buton kisa ÇALIŞTI ");
+    delay(1000);
+  }
+  if (digitalRead(butonuzun) == 1) {
+    //Serial.print(" buton uzun çalıştı");
+    delay(1000);
+  }
+  if (digitalRead(switc) == 1) {
+    Serial.print("Durum degismeden once. Durum = ");
+    Serial.println(durum);
+    Serial.println("Switch degisti");
+    durum = !durum;
+    Serial.print("Durum degisti. Durum = ");
+    iletisim.println("Durum degisti.");
+    Serial.println(durum);
+    delay (1000);
+  }
+  if (durum == 0) {
+    digitalWrite(switch_led, HIGH);
+
+    if (digitalRead(butonkisa) == 1) {
+      delay(500);
+      x = x + ".";
+      Serial.print("Buton Kisa Calisti: ");
+      Serial.println(x);
+    }
+    else if (digitalRead(butonuzun) == 1) {
+      delay(500);
+      x = x + "-";
+      Serial.print("Buton Uzun Calisti: ");
+      Serial.println(x);
+    }
+    if (digitalRead(ok) == 1) {
+      delay(500);
+
+      Serial.println("Ok Calisti");
+      durum_while = true;
+    }
+    while (durum_while) {
+      if (x == "......")h = "-1";
+
+      else if (x == ".-") h = "a";
+
+      else if (x == "-...")h = "b";
+
+      else if (x == "-.-.")h = "c";
+
+      else if (x == "-..")h = "d";
+
+      else if (x == ".")h = "e";
+
+      else if (x == "..-.")h = "f";
+
+      else if (x == "--.")h = "g";
+
+      else if (x == "....")h = "h";
+
+      else if (x == "..")h = "i";
+
+      else if (x == ".---")h = "j";
+
+      else if (x == "-.-")h = "k";
+
+      else if (x == ".-..")h = "l";
+
+      else if (x == "--")h = "m";
+
+      else if (x == "-.")h = "n";
+
+      else if (x == "---")h = "o";
+
+      else if (x == ".--.")h = "p";
+
+      else if (x == "--.-")h = "q";
+
+      else if (x == ".-.-")h = "r";
+
+      else if (x == "...")h = "s";
+
+      else if (x == "-")h = "t";
+
+      else if (x == "..-")h = "u";
+
+      else if (x == "...-")h = "v";
+
+      else if (x == ".--")h = "w";
+
+      else if (x == "-..-")h = "x";
+
+      else if (x == "-.--")h = "y";
+
+      else if (x == "--..")h = "z";
+
+      else if (x == ".----")h = "1";
+
+      else if (x == "..---")h = "2";
+
+      else if (x == "...--")h = "3";
+
+      else if (x == "....-")h = "4";
+
+      else if (x == ".....")h = "5";
+
+      else if (x == "-....")h = "6";
+
+      else if (x == "--...")h = "7";
+
+      else if (x == "---..")h = "8";
+
+      else if (x == "----.")h = "9";
+
+      else if (x == "-----")h = "0";
+      x = "";
+
+      if (h == "-1") break;
+      else {
+        harf = h;
+        Serial.print("Harf: ");
+        Serial.println(harf);
+        kelime = kelime + harf;
+        Serial.print("Kelime: ");
+        Serial.println(kelime);
+        harf = "";
+        durum_while = false;
+      }
+    }
+    if (digitalRead(gonder) == 1) {
+      delay(500);
+      iletisim.println(kelime);
+      Serial.println("Gonder Calisti");
+      Serial.print(kelime);
+      kelime = "";
+    }
+  }
+
+  if (durum == 1) {
+    digitalWrite(switch_led, LOW);
+    if (iletisim.available())
+    {
+      char data = iletisim.read();
+      Serial.println(data);
+      switch (data)
+      {
+        case 'a':
+          kisa();
+          uzun();
+          break;
+
+        case 'b':
+          kisa();
+          kisa();
+          kisa();
+          uzun();
+          break;
+
+        case 'c':
+          uzun();
+          kisa();
+          uzun();
+          kisa();
+          break;
+
+        case 'd':
+          uzun();
+          kisa();
+          kisa();
+          break;
+
+        case 'e':
+          kisa();
+          break;
+
+        case 'f':
+          kisa();
+          kisa();
+          uzun();
+          kisa();
+          break;
+
+        case 'g':
+          uzun();
+          uzun();
+          kisa();
+          break;
+
+        case 'h':
+          kisa();
+          kisa();
+          kisa();
+          kisa();
+          break;
+
+        case 'i':
+          kisa();
+          kisa();
+          break;
+
+        case 'j':
+          kisa();
+          uzun();
+          uzun();
+          uzun();
+          break;
+
+        case 'k':
+          uzun();
+          kisa();
+          uzun();
+          break;
+
+        case 'l':
+          kisa();
+          uzun();
+          kisa();
+          kisa();
+          break;
+
+        case 'm':
+          uzun();
+          uzun();
+          break;
+
+        case 'n':
+          uzun();
+          kisa();
+          break;
+
+        case 'o':
+          uzun();
+          uzun();
+          uzun();
+          break;
+
+        case 'p':
+          kisa();
+          uzun();
+          uzun();
+          kisa();
+          break;
+
+        case 'q':
+          uzun();
+          uzun();
+          kisa();
+          uzun();
+          break;
+
+        case 'r':
+          kisa();
+          uzun();
+          kisa();
+          break;
+
+        case 's':
+          kisa();
+          kisa();
+          kisa();
+          break;
+
+        case 't':
+          uzun();
+          break;
+
+        case 'u':
+          kisa();
+          kisa();
+          uzun();
+          break;
+
+        case 'v':
+          kisa();
+          kisa();
+          uzun();
+          break;
+
+        case 'w':
+          kisa();
+          uzun();
+          uzun();
+          break;
+
+        case 'y':
+          uzun();
+          kisa();
+          uzun();
+          uzun();
+          break;
+
+        case 'z':
+          uzun();
+          uzun();
+          kisa();
+          kisa();
+          break;
+
+        case '1':
+          kisa();
+          uzun();
+          uzun();
+          uzun();
+          uzun();
+          break;
+
+        case '2':
+          kisa();
+          kisa();
+          uzun();
+          uzun();
+          uzun();
+          break;
+
+        case '3':
+          kisa();
+          kisa();
+          kisa();
+          uzun();
+          uzun();
+          break;
+
+        case '4':
+          kisa();
+          kisa();
+          kisa();
+          kisa();
+          uzun();
+          break;
+
+        case '5':
+          kisa();
+          kisa();
+          kisa();
+          kisa();
+          kisa();
+          break;
+
+        case '6':
+          uzun();
+          kisa();
+          kisa();
+          kisa();
+          kisa();
+          break;
+
+        case '7':
+          uzun();
+          uzun();
+          kisa();
+          kisa();
+          kisa();
+          break;
+
+        case '8':
+          uzun();
+          uzun();
+          uzun();
+          kisa();
+          kisa();
+          break;
+
+        case '9':
+          uzun();
+          uzun();
+          uzun();
+          uzun();
+          kisa();
+          break;
+
+        case '0':
+          uzun();
+          uzun();
+          uzun();
+          uzun();
+          uzun();
+          break;
+
+      }
+
+    }
+  }
+
+
+}
